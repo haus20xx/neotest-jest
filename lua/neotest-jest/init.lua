@@ -50,14 +50,14 @@ function adapter.discover_positions(path)
     ; Matches: `describe('context')`
     ((call_expression
       function: (identifier) @func_name (#eq? @func_name "describe")
-      arguments: (arguments (string (string_fragment) @namespace.name) [(arrow_function) (call_expression)])
+      arguments: (arguments (string (string_fragment) @namespace.name) [(arrow_function)])
     )) @namespace.definition
     ; Matches: `describe.only('context')`
     ((call_expression
       function: (member_expression
         object: (identifier) @func_name (#any-of? @func_name "describe")
       )
-      arguments: (arguments (string (string_fragment) @namespace.name) [(arrow_function) (call_expression)])
+      arguments: (arguments (string (string_fragment) @namespace.name) [(arrow_function)])
     )) @namespace.definition
     ; Matches: `describe.each(['data'])('context')`
     ((call_expression
@@ -66,7 +66,7 @@ function adapter.discover_positions(path)
           object: (identifier) @func_name (#any-of? @func_name "describe")
         )
       )
-      arguments: (arguments (string (string_fragment) @namespace.name) [(arrow_function) (call_expression)])
+      arguments: (arguments (string (string_fragment) @namespace.name) [(arrow_function)])
     )) @namespace.definition
 
     ; -- Tests --
@@ -148,7 +148,7 @@ end
 
 local function escapeTestPattern(s)
   return (
-    s:gsub("%(", "%\\(")
+      s:gsub("%(", "%\\(")
       :gsub("%)", "%\\)")
       :gsub("%]", "%\\]")
       :gsub("%[", "%\\[")
@@ -160,7 +160,7 @@ local function escapeTestPattern(s)
       :gsub("%^", "%\\^")
       :gsub("%/", "%\\/")
       :gsub("%'", "%\\'")
-  )
+      )
 end
 
 local function get_default_strategy_config(strategy, command, cwd)
@@ -200,10 +200,10 @@ end
 
 local function cleanAnsi(s)
   return s:gsub("\x1b%[%d+;%d+;%d+;%d+;%d+m", "")
-    :gsub("\x1b%[%d+;%d+;%d+;%d+m", "")
-    :gsub("\x1b%[%d+;%d+;%d+m", "")
-    :gsub("\x1b%[%d+;%d+m", "")
-    :gsub("\x1b%[%d+m", "")
+      :gsub("\x1b%[%d+;%d+;%d+;%d+m", "")
+      :gsub("\x1b%[%d+;%d+;%d+m", "")
+      :gsub("\x1b%[%d+;%d+m", "")
+      :gsub("\x1b%[%d+m", "")
 end
 
 local function findErrorPosition(file, errStr)
